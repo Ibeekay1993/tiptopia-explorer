@@ -13,14 +13,14 @@ export function SubscriptionSection() {
         </p>
       </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Free Plan */}
-        <Card className="border-2 border-border">
+        <Card className="border-2 border-border h-full">
           <CardHeader className="text-center">
             <CardTitle>Free</CardTitle>
             <CardDescription>Basic tips for casual bettors</CardDescription>
             <div className="mt-4 mb-2">
-              <span className="text-3xl font-bold">$0</span>
+              <span className="text-3xl font-bold">₦0</span>
               <span className="text-muted-foreground">/month</span>
             </div>
           </CardHeader>
@@ -54,7 +54,7 @@ export function SubscriptionSection() {
         </Card>
         
         {/* Pro Plan */}
-        <Card className="border-2 border-primary shadow-lg lg:-mt-4 lg:mb-4">
+        <Card className="border-2 border-primary shadow-lg h-full">
           <CardHeader className="text-center">
             <div className="bg-primary text-primary-foreground rounded-full px-3 py-1 text-xs font-semibold inline-block mb-2">
               MOST POPULAR
@@ -62,7 +62,7 @@ export function SubscriptionSection() {
             <CardTitle>Pro</CardTitle>
             <CardDescription>For serious bettors</CardDescription>
             <div className="mt-4 mb-2">
-              <span className="text-3xl font-bold">$29</span>
+              <span className="text-3xl font-bold">₦1,999</span>
               <span className="text-muted-foreground">/month</span>
             </div>
           </CardHeader>
@@ -96,12 +96,12 @@ export function SubscriptionSection() {
         </Card>
         
         {/* VIP Plan */}
-        <Card className="border-2 border-border">
+        <Card className="border-2 border-border h-full">
           <CardHeader className="text-center">
             <CardTitle>VIP</CardTitle>
             <CardDescription>For professional bettors</CardDescription>
             <div className="mt-4 mb-2">
-              <span className="text-3xl font-bold">$79</span>
+              <span className="text-3xl font-bold">₦4,999</span>
               <span className="text-muted-foreground">/month</span>
             </div>
           </CardHeader>

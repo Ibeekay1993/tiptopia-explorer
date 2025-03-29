@@ -1,13 +1,24 @@
 
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { cn } from "@/lib/utils";
+import { toast } from "sonner";
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const handleSignIn = () => {
+    toast.info("Sign-in functionality will be added soon", {
+      description: "This feature is currently under development.",
+      duration: 3000
+    });
+    // For admins, we'll temporarily allow access with a direct navigation
+    navigate("/admin");
+  };
 
   return (
     <header className="sticky top-0 z-50 w-full bg-background/95 backdrop-blur-sm">
@@ -23,6 +34,9 @@ export function Header() {
             <Link to="/predictions" className="text-sm font-medium text-foreground/80 hover:text-foreground transition-colors">
               Predictions
             </Link>
+            <Link to="/daily-odds" className="text-sm font-medium text-foreground/80 hover:text-foreground transition-colors">
+              Daily Odds
+            </Link>
             <Link to="/profile" className="text-sm font-medium text-foreground/80 hover:text-foreground transition-colors">
               Profile
             </Link>
@@ -30,7 +44,11 @@ export function Header() {
         </div>
         <div className="flex items-center gap-4">
           <ThemeToggle />
-          <Button className="hidden md:inline-flex" size="sm">
+          <Button 
+            className="hidden md:inline-flex" 
+            size="sm"
+            onClick={handleSignIn}
+          >
             Sign In
           </Button>
           <Button
@@ -47,7 +65,7 @@ export function Header() {
       <div
         className={cn(
           "container md:hidden overflow-hidden transition-all duration-300 ease-in-out",
-          isMenuOpen ? "max-h-56" : "max-h-0"
+          isMenuOpen ? "max-h-72" : "max-h-0"
         )}
       >
         <nav className="flex flex-col space-y-4 py-4">
@@ -66,13 +84,27 @@ export function Header() {
             Predictions
           </Link>
           <Link
+            to="/daily-odds"
+            className="text-sm font-medium text-foreground/80 hover:text-foreground transition-colors"
+            onClick={() => setIsMenuOpen(false)}
+          >
+            Daily Odds
+          </Link>
+          <Link
             to="/profile"
             className="text-sm font-medium text-foreground/80 hover:text-foreground transition-colors"
             onClick={() => setIsMenuOpen(false)}
           >
             Profile
           </Link>
-          <Button size="sm" className="w-full">
+          <Button 
+            size="sm" 
+            className="w-full"
+            onClick={() => {
+              setIsMenuOpen(false);
+              handleSignIn();
+            }}
+          >
             Sign In
           </Button>
         </nav>

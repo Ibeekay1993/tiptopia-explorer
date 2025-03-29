@@ -21,6 +21,9 @@ export function Footer() {
             <Link to="/predictions" className="hover:text-foreground">
               Predictions
             </Link>
+            <Link to="/daily-odds" className="hover:text-foreground">
+              Daily Odds
+            </Link>
             <Link to="/profile" className="hover:text-foreground">
               Profile
             </Link>

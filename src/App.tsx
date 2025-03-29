@@ -7,7 +7,9 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import Index from "./pages/Index";
 import Predictions from "./pages/Predictions";
+import DailyOdds from "./pages/DailyOdds";
 import Profile from "./pages/Profile";
+import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -22,7 +24,9 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/predictions" element={<Predictions />} />
+            <Route path="/daily-odds" element={<DailyOdds />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/admin" element={<Admin />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
