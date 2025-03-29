@@ -24,6 +24,13 @@ import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { dailyOdds, DailyOdd } from "@/data/dailyOdds";
 
+// Helper function to get formatted date based on day selection
+const getFormattedDate = (dayOffset: number = 0): string => {
+  const date = new Date();
+  date.setDate(date.getDate() + dayOffset);
+  return date.toISOString().split('T')[0];
+};
+
 const Admin = () => {
   const [isAdmin, setIsAdmin] = useState(true); // In a real app, this would be determined by authentication
   const [newOdd, setNewOdd] = useState<Omit<DailyOdd, 'id'>>({
@@ -34,13 +41,6 @@ const Admin = () => {
     date: getFormattedDate(0) // Current date by default
   });
   const [existingOdds, setExistingOdds] = useState<DailyOdd[]>([...dailyOdds]);
-  
-  // Helper function to get formatted date based on day selection
-  const getFormattedDate = (dayOffset: number = 0): string => {
-    const date = new Date();
-    date.setDate(date.getDate() + dayOffset);
-    return date.toISOString().split('T')[0];
-  };
   
   // Update date when day changes
   useEffect(() => {
