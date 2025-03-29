@@ -1,7 +1,9 @@
-
 import { useState } from "react";
 import { 
-  Football, Basketball, Tennis, Dumbbell, 
+  Bike, // For soccer (football)
+  CircleDot, // For basketball
+  BarChart, // For tennis
+  Dumbbell, 
   Star, ThumbsUp, Lock, TrendingUp 
 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
@@ -20,15 +22,15 @@ export function TipCard({ tip }: TipCardProps) {
   const getSportIcon = (sport: string) => {
     switch (sport) {
       case 'soccer':
-        return <Football className="h-5 w-5" />;
+        return <Bike className="h-5 w-5" />;
       case 'basketball':
-        return <Basketball className="h-5 w-5" />;
+        return <CircleDot className="h-5 w-5" />;
       case 'tennis':
-        return <Tennis className="h-5 w-5" />;
+        return <BarChart className="h-5 w-5" />;
       case 'hockey':
         return <Dumbbell className="h-5 w-5" />;
       default:
-        return <Football className="h-5 w-5" />;
+        return <Bike className="h-5 w-5" />;
     }
   };
 
