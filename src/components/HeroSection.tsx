@@ -1,8 +1,11 @@
 
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 
 export function HeroSection() {
+  const navigate = useNavigate();
+
   return (
     <div className="relative overflow-hidden bg-hero-pattern bg-cover bg-center py-20 md:py-32">
       <div className="container relative z-10 text-center">
@@ -13,10 +16,29 @@ export function HeroSection() {
           Join thousands of successful bettors using our expert predictions with a proven track record of 70%+ accuracy.
         </p>
         <div className="flex flex-col sm:flex-row justify-center gap-4">
-          <Button size="lg" className="gap-2">
+          <Button 
+            size="lg" 
+            className="gap-2"
+            onClick={() => {
+              const tipsSection = document.querySelector('.container.py-12');
+              if (tipsSection) {
+                tipsSection.scrollIntoView({ behavior: 'smooth' });
+              }
+            }}
+          >
             Get Started <ArrowRight className="h-4 w-4" />
           </Button>
-          <Button variant="outline" size="lg" className="bg-white/10 text-white border-white/20 hover:bg-white/20">
+          <Button 
+            variant="outline" 
+            size="lg" 
+            className="bg-white/10 text-white border-white/20 hover:bg-white/20"
+            onClick={() => {
+              const tipsSection = document.querySelector('.container.py-12');
+              if (tipsSection) {
+                tipsSection.scrollIntoView({ behavior: 'smooth' });
+              }
+            }}
+          >
             View Today's Tips
           </Button>
         </div>

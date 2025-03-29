@@ -13,7 +13,19 @@ export interface Tip {
   isPremium: boolean;
 }
 
+// Helper function to get formatted dates
+const getFormattedDate = (dayOffset: number = 0): string => {
+  const date = new Date();
+  date.setDate(date.getDate() + dayOffset);
+  return date.toISOString().split('T')[0];
+};
+
+const today = getFormattedDate();
+const yesterday = getFormattedDate(-1);
+const tomorrow = getFormattedDate(1);
+
 export const tips: Tip[] = [
+  // Yesterday's tips
   {
     id: '1',
     match: 'Manchester United vs Liverpool',
@@ -21,7 +33,7 @@ export const tips: Tip[] = [
     prediction: 'Over 2.5 Goals',
     odds: 1.91,
     confidence: 85,
-    date: '2023-09-15',
+    date: yesterday,
     time: '15:00',
     status: 'Won',
     sport: 'soccer',
@@ -34,12 +46,14 @@ export const tips: Tip[] = [
     prediction: 'Both Teams to Score',
     odds: 1.75,
     confidence: 90,
-    date: '2023-09-15',
+    date: yesterday,
     time: '20:00',
     status: 'Won',
     sport: 'soccer',
     isPremium: false
   },
+  
+  // Today's tips
   {
     id: '3',
     match: 'PSG vs Bayern Munich',
@@ -47,9 +61,9 @@ export const tips: Tip[] = [
     prediction: 'Home Win',
     odds: 2.10,
     confidence: 75,
-    date: '2023-09-16',
+    date: today,
     time: '20:00',
-    status: 'Lost',
+    status: 'Pending',
     sport: 'soccer',
     isPremium: false
   },
@@ -60,7 +74,7 @@ export const tips: Tip[] = [
     prediction: 'Away Win',
     odds: 2.50,
     confidence: 80,
-    date: '2023-09-16',
+    date: today,
     time: '19:30',
     status: 'Pending',
     sport: 'basketball',
@@ -73,12 +87,14 @@ export const tips: Tip[] = [
     prediction: 'Over 3.5 Sets',
     odds: 1.85,
     confidence: 70,
-    date: '2023-09-17',
+    date: today,
     time: '14:00',
     status: 'Pending',
     sport: 'tennis',
     isPremium: true
   },
+  
+  // Tomorrow's tips
   {
     id: '6',
     match: 'Toronto Maple Leafs vs Montreal Canadiens',
@@ -86,7 +102,7 @@ export const tips: Tip[] = [
     prediction: 'Under 5.5 Goals',
     odds: 1.95,
     confidence: 65,
-    date: '2023-09-17',
+    date: tomorrow,
     time: '19:00',
     status: 'Pending',
     sport: 'hockey',
@@ -99,7 +115,7 @@ export const tips: Tip[] = [
     prediction: 'Draw',
     odds: 3.20,
     confidence: 60,
-    date: '2023-09-18',
+    date: tomorrow,
     time: '20:45',
     status: 'Pending',
     sport: 'soccer',
@@ -112,10 +128,38 @@ export const tips: Tip[] = [
     prediction: 'Over 220.5 Points',
     odds: 1.90,
     confidence: 75,
-    date: '2023-09-18',
+    date: tomorrow,
     time: '19:00',
     status: 'Pending',
     sport: 'basketball',
+    isPremium: true
+  },
+  
+  // Additional tips for tomorrow
+  {
+    id: '9',
+    match: 'Arsenal vs Tottenham',
+    league: 'Premier League',
+    prediction: 'Both Teams to Score',
+    odds: 1.80,
+    confidence: 82,
+    date: tomorrow,
+    time: '15:30',
+    status: 'Pending',
+    sport: 'soccer',
+    isPremium: false
+  },
+  {
+    id: '10',
+    match: 'Novak Djokovic vs Carlos Alcaraz',
+    league: 'Wimbledon',
+    prediction: 'Djokovic to Win',
+    odds: 2.25,
+    confidence: 78,
+    date: tomorrow,
+    time: '13:00',
+    status: 'Pending',
+    sport: 'tennis',
     isPremium: true
   }
 ];

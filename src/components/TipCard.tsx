@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { 
   Bike, // For soccer (football)
@@ -11,6 +12,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Tip } from "@/data/tips";
+import { useToast } from "@/hooks/use-toast";
 
 interface TipCardProps {
   tip: Tip;
@@ -18,6 +20,9 @@ interface TipCardProps {
 
 export function TipCard({ tip }: TipCardProps) {
   const [isBookmarked, setIsBookmarked] = useState(false);
+  const [isLiked, setIsLiked] = useState(false);
+  const [confidenceValue, setConfidenceValue] = useState(tip.confidence);
+  const { toast } = useToast();
 
   const getSportIcon = (sport: string) => {
     switch (sport) {
@@ -60,13 +65,30 @@ export function TipCard({ tip }: TipCardProps) {
     }
   };
 
+  const handleLike = () => {
+    setIsLiked(!isLiked);
+    // Increase confidence by 2% when liked, decrease by 2% when unliked
+    const newConfidence = isLiked 
+      ? Math.max(tip.confidence, confidenceValue - 2) 
+      : Math.min(100, confidenceValue + 2);
+    
+    setConfidenceValue(newConfidence);
+    
+    toast({
+      title: isLiked ? "Removed like" : "Liked tip",
+      description: isLiked 
+        ? "You've removed your like from this tip" 
+        : "Thanks for your feedback! Community confidence updated.",
+    });
+  };
+
   return (
     <Card className="overflow-hidden h-full">
       <div className={cn("h-2", getStatusColor(tip.status))} />
       <CardContent className="p-4">
         <div className="flex justify-between items-start mb-3">
           <div className="flex items-center gap-2">
-            <div className={cn("sport-icon", getSportColor(tip.sport))}>
+            <div className={cn("p-2 rounded-full", getSportColor(tip.sport))}>
               {getSportIcon(tip.sport)}
             </div>
             <div>
@@ -97,10 +119,10 @@ export function TipCard({ tip }: TipCardProps) {
           <div className="w-full bg-secondary rounded-full h-2">
             <div 
               className="bg-sport-green h-2 rounded-full" 
-              style={{ width: `${tip.confidence}%` }}
+              style={{ width: `${confidenceValue}%` }}
             />
           </div>
-          <span className="text-xs font-medium">{tip.confidence}%</span>
+          <span className="text-xs font-medium">{confidenceValue}%</span>
         </div>
         
         <div className="flex justify-between items-center">
@@ -112,14 +134,29 @@ export function TipCard({ tip }: TipCardProps) {
               variant="ghost" 
               size="icon" 
               className="h-8 w-8"
-              onClick={() => setIsBookmarked(!isBookmarked)}
+              onClick={() => {
+                setIsBookmarked(!isBookmarked);
+                toast({
+                  title: isBookmarked ? "Removed bookmark" : "Bookmarked",
+                  description: isBookmarked 
+                    ? "Tip removed from your bookmarks" 
+                    : "Tip added to your bookmarks"
+                });
+              }}
             >
               <Star 
                 className={cn("h-4 w-4", isBookmarked ? "fill-yellow-400 text-yellow-400" : "")} 
               />
             </Button>
-            <Button variant="ghost" size="icon" className="h-8 w-8">
-              <ThumbsUp className="h-4 w-4" />
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="h-8 w-8"
+              onClick={handleLike}
+            >
+              <ThumbsUp 
+                className={cn("h-4 w-4", isLiked ? "fill-blue-500 text-blue-500" : "")} 
+              />
             </Button>
           </div>
         </div>
