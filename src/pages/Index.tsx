@@ -1,6 +1,7 @@
 
 import { HeroSection } from "@/components/HeroSection";
-import { StatsSection } from "@/components/StatsSection";
+import { BetOfTheDay } from "@/components/BetOfTheDay";
+import { DailyOddsSnippet } from "@/components/DailyOddsSnippet";
 import { FeaturedTips } from "@/components/FeaturedTips";
 import { SubscriptionSection } from "@/components/SubscriptionSection";
 import { Footer } from "@/components/Footer";
@@ -12,7 +13,8 @@ const Index = () => {
       <Header />
       <main className="flex-grow">
         <HeroSection />
-        <StatsSection />
+        <BetOfTheDay />
+        <DailyOddsSnippet />
         <FeaturedTips />
         <SubscriptionSection />
       </main>
