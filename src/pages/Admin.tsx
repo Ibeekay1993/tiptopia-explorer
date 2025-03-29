@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -8,11 +8,66 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { PlusCircle, Save } from "lucide-react";
+import { 
+  PlusCircle, 
+  Save, 
+  Trash2, 
+  Shield, 
+  AlertCircle,
+  Check,
+  X,
+  CalendarClock,
+  Calendar
+} from "lucide-react";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
+import { dailyOdds } from "@/data/dailyOdds";
 
 const Admin = () => {
   const [isAdmin, setIsAdmin] = useState(true); // In a real app, this would be determined by authentication
+  const [newOdd, setNewOdd] = useState({
+    league: "",
+    match: "",
+    prediction: "",
+    day: "today"
+  });
+  const [existingOdds, setExistingOdds] = useState([...dailyOdds]);
+  
+  const handleAddOdd = () => {
+    if (!newOdd.league || !newOdd.match || !newOdd.prediction) {
+      toast.error("Please fill in all fields", {
+        description: "League, match and prediction are required"
+      });
+      return;
+    }
+
+    const newOddWithId = {
+      ...newOdd,
+      id: `odd-${Date.now()}`
+    };
+
+    setExistingOdds(prev => [newOddWithId, ...prev]);
+    
+    toast.success("New odds added successfully!", {
+      description: `${newOdd.match} has been added to ${newOdd.day}'s odds`
+    });
+    
+    // Reset form
+    setNewOdd({
+      league: "",
+      match: "",
+      prediction: "",
+      day: newOdd.day
+    });
+  };
+
+  const handleRemoveOdd = (id) => {
+    setExistingOdds(prev => prev.filter(odd => odd.id !== id));
+    toast.success("Odds removed successfully", {
+      description: "The odds have been deleted from the system"
+    });
+  };
   
   // For demo purposes only - in a real app this would be handled by authentication
   if (!isAdmin) {
@@ -20,18 +75,20 @@ const Admin = () => {
       <div className="min-h-screen flex flex-col">
         <Header />
         <main className="flex-grow container py-16 flex items-center justify-center">
-          <Card className="w-full max-w-md">
-            <CardHeader>
+          <Card className="w-full max-w-md border-destructive">
+            <CardHeader className="bg-destructive/10 gap-2">
+              <AlertCircle className="h-6 w-6 text-destructive" />
               <CardTitle>Access Denied</CardTitle>
               <CardDescription>
                 You don't have permission to access this page. Please sign in as an admin.
               </CardDescription>
             </CardHeader>
-            <CardFooter>
+            <CardFooter className="mt-4">
               <Button 
                 onClick={() => setIsAdmin(true)} 
-                className="w-full"
+                className="w-full gap-2"
               >
+                <Shield className="h-4 w-4" />
                 Demo: Override Access (Development Only)
               </Button>
             </CardFooter>
@@ -47,10 +104,19 @@ const Admin = () => {
       <Header />
       <main className="flex-grow">
         <div className="container py-8">
-          <h1 className="text-3xl font-bold mb-2">Admin Dashboard</h1>
-          <p className="text-muted-foreground mb-8">
-            Manage betting tips, odds, and user accounts
-          </p>
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+            <div>
+              <h1 className="text-3xl font-bold mb-1 flex items-center">
+                Admin Dashboard <Shield className="ml-2 h-5 w-5 text-primary" />
+              </h1>
+              <p className="text-muted-foreground">
+                Manage betting tips, odds, and user accounts
+              </p>
+            </div>
+            <Badge variant="outline" className="px-3 py-1 bg-primary/10 border-primary/30 text-primary">
+              Admin Access
+            </Badge>
+          </div>
           
           <Tabs defaultValue="daily-odds" className="w-full">
             <TabsList className="grid w-full max-w-md grid-cols-2">
@@ -60,8 +126,11 @@ const Admin = () => {
             
             <TabsContent value="daily-odds" className="space-y-6">
               <Card>
-                <CardHeader>
-                  <CardTitle>Add New Daily Odds</CardTitle>
+                <CardHeader className="pb-3">
+                  <div className="flex items-center gap-2">
+                    <CalendarClock className="h-5 w-5 text-primary" />
+                    <CardTitle>Add New Daily Odds</CardTitle>
+                  </div>
                   <CardDescription>
                     Add new odds to appear in the daily odds page
                   </CardDescription>
@@ -70,24 +139,42 @@ const Admin = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label htmlFor="league">League</Label>
-                      <Input id="league" placeholder="e.g. Premier League" />
+                      <Input 
+                        id="league" 
+                        placeholder="e.g. Premier League" 
+                        value={newOdd.league}
+                        onChange={(e) => setNewOdd({...newOdd, league: e.target.value})}
+                      />
                     </div>
                     
                     <div className="space-y-2">
                       <Label htmlFor="match">Match</Label>
-                      <Input id="match" placeholder="e.g. Team A vs Team B" />
+                      <Input 
+                        id="match" 
+                        placeholder="e.g. Team A vs Team B" 
+                        value={newOdd.match}
+                        onChange={(e) => setNewOdd({...newOdd, match: e.target.value})}
+                      />
                     </div>
                   </div>
                   
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div className="space-y-2">
                       <Label htmlFor="prediction">Prediction</Label>
-                      <Input id="prediction" placeholder="e.g. 1, X, 2, BTTS" />
+                      <Input 
+                        id="prediction" 
+                        placeholder="e.g. 1, X, 2, BTTS" 
+                        value={newOdd.prediction}
+                        onChange={(e) => setNewOdd({...newOdd, prediction: e.target.value})}
+                      />
                     </div>
                     
                     <div className="space-y-2">
                       <Label htmlFor="date">Date</Label>
-                      <Select defaultValue="today">
+                      <Select 
+                        value={newOdd.day}
+                        onValueChange={(value) => setNewOdd({...newOdd, day: value})}
+                      >
                         <SelectTrigger>
                           <SelectValue placeholder="Select day" />
                         </SelectTrigger>
@@ -100,7 +187,7 @@ const Admin = () => {
                     </div>
                     
                     <div className="space-y-2 flex items-end">
-                      <Button className="gap-2 w-full">
+                      <Button className="gap-2 w-full" onClick={handleAddOdd}>
                         <PlusCircle className="h-4 w-4" />
                         Add Odds
                       </Button>
@@ -110,16 +197,61 @@ const Admin = () => {
               </Card>
               
               <Card>
-                <CardHeader>
-                  <CardTitle>Manage Existing Odds</CardTitle>
+                <CardHeader className="pb-3">
+                  <div className="flex items-center gap-2">
+                    <Calendar className="h-5 w-5 text-primary" />
+                    <CardTitle>Manage Existing Odds</CardTitle>
+                  </div>
                   <CardDescription>
                     Edit or delete existing daily odds
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-center py-4 text-muted-foreground">
-                    This feature would display a table of existing odds for editing
-                  </p>
+                  <div className="rounded-md border">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Day</TableHead>
+                          <TableHead>League</TableHead>
+                          <TableHead>Match</TableHead>
+                          <TableHead>Prediction</TableHead>
+                          <TableHead className="text-right w-[100px]">Actions</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {existingOdds.length === 0 ? (
+                          <TableRow>
+                            <TableCell colSpan={5} className="text-center py-4 text-muted-foreground">
+                              No odds available. Add some odds to get started.
+                            </TableCell>
+                          </TableRow>
+                        ) : (
+                          existingOdds.map((odd) => (
+                            <TableRow key={odd.id}>
+                              <TableCell>
+                                <Badge variant="outline" className="capitalize">
+                                  {odd.day}
+                                </Badge>
+                              </TableCell>
+                              <TableCell>{odd.league}</TableCell>
+                              <TableCell>{odd.match}</TableCell>
+                              <TableCell>{odd.prediction}</TableCell>
+                              <TableCell className="text-right">
+                                <Button 
+                                  variant="ghost" 
+                                  size="icon"
+                                  className="h-8 w-8 text-destructive hover:text-destructive hover:bg-destructive/10"
+                                  onClick={() => handleRemoveOdd(odd.id)}
+                                >
+                                  <Trash2 className="h-4 w-4" />
+                                </Button>
+                              </TableCell>
+                            </TableRow>
+                          ))
+                        )}
+                      </TableBody>
+                    </Table>
+                  </div>
                 </CardContent>
                 <CardFooter className="flex justify-end">
                   <Button 
@@ -203,7 +335,19 @@ const Admin = () => {
                     </div>
                   </div>
                 </CardContent>
-                <CardFooter className="flex justify-end">
+                <CardFooter className="flex justify-between">
+                  <Button 
+                    variant="outline" 
+                    className="gap-2"
+                    onClick={() => {
+                      toast.info("Form cleared", {
+                        description: "All fields have been reset"
+                      });
+                    }}
+                  >
+                    <X className="h-4 w-4" />
+                    Clear Form
+                  </Button>
                   <Button 
                     className="gap-2"
                     onClick={() => {
@@ -212,7 +356,7 @@ const Admin = () => {
                       });
                     }}
                   >
-                    <PlusCircle className="h-4 w-4" />
+                    <Check className="h-4 w-4" />
                     Add Premium Tip
                   </Button>
                 </CardFooter>
