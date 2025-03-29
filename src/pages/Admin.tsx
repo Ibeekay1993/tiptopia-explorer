@@ -22,17 +22,37 @@ import {
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
-import { dailyOdds } from "@/data/dailyOdds";
+import { dailyOdds, DailyOdd } from "@/data/dailyOdds";
 
 const Admin = () => {
   const [isAdmin, setIsAdmin] = useState(true); // In a real app, this would be determined by authentication
-  const [newOdd, setNewOdd] = useState({
+  const [newOdd, setNewOdd] = useState<Omit<DailyOdd, 'id'>>({
     league: "",
     match: "",
     prediction: "",
-    day: "today"
+    day: "today",
+    date: getFormattedDate(0) // Current date by default
   });
-  const [existingOdds, setExistingOdds] = useState([...dailyOdds]);
+  const [existingOdds, setExistingOdds] = useState<DailyOdd[]>([...dailyOdds]);
+  
+  // Helper function to get formatted date based on day selection
+  const getFormattedDate = (dayOffset: number = 0): string => {
+    const date = new Date();
+    date.setDate(date.getDate() + dayOffset);
+    return date.toISOString().split('T')[0];
+  };
+  
+  // Update date when day changes
+  useEffect(() => {
+    let dateOffset = 0;
+    if (newOdd.day === "yesterday") dateOffset = -1;
+    else if (newOdd.day === "tomorrow") dateOffset = 1;
+    
+    setNewOdd(prev => ({
+      ...prev,
+      date: getFormattedDate(dateOffset)
+    }));
+  }, [newOdd.day]);
   
   const handleAddOdd = () => {
     if (!newOdd.league || !newOdd.match || !newOdd.prediction) {
@@ -42,7 +62,7 @@ const Admin = () => {
       return;
     }
 
-    const newOddWithId = {
+    const newOddWithId: DailyOdd = {
       ...newOdd,
       id: `odd-${Date.now()}`
     };
@@ -58,11 +78,12 @@ const Admin = () => {
       league: "",
       match: "",
       prediction: "",
-      day: newOdd.day
+      day: newOdd.day,
+      date: newOdd.date
     });
   };
 
-  const handleRemoveOdd = (id) => {
+  const handleRemoveOdd = (id: string) => {
     setExistingOdds(prev => prev.filter(odd => odd.id !== id));
     toast.success("Odds removed successfully", {
       description: "The odds have been deleted from the system"
@@ -173,7 +194,7 @@ const Admin = () => {
                       <Label htmlFor="date">Date</Label>
                       <Select 
                         value={newOdd.day}
-                        onValueChange={(value) => setNewOdd({...newOdd, day: value})}
+                        onValueChange={(value) => setNewOdd({...newOdd, day: value as 'yesterday' | 'today' | 'tomorrow'})}
                       >
                         <SelectTrigger>
                           <SelectValue placeholder="Select day" />
