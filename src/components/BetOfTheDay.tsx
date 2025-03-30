@@ -15,9 +15,12 @@ export function BetOfTheDay() {
     league: "Premier League",
     date: new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' }),
     time: "20:00",
-    prediction: "Manchester City to Win & Over 2.5",
     odds: 2.25,
     confidence: 92,
+  };
+
+  const handleViewFullAnalysis = () => {
+    navigate('/bet-of-the-day');
   };
 
   return (
@@ -67,11 +70,14 @@ export function BetOfTheDay() {
           </CardHeader>
           
           <CardContent className="relative z-10 pb-4">
-            <div className="mb-4">
-              <div className="text-sm font-medium text-muted-foreground mb-1">PREDICTION</div>
-              <div className="p-3 rounded-md bg-primary/10 border border-primary/20 font-semibold text-primary text-center">
-                {todaysBet.prediction}
-              </div>
+            <div className="p-3 rounded-md border border-primary/20 text-center">
+              <p className="text-muted-foreground mb-2">Our expert analysts have a high-confidence prediction for this match</p>
+              <Button 
+                className="gap-2 bg-gradient-to-r from-primary to-blue-500 hover:from-primary/90 hover:to-blue-600 transition-all duration-300"
+                onClick={handleViewFullAnalysis}
+              >
+                View Full Analysis <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+              </Button>
             </div>
           </CardContent>
           
@@ -89,7 +95,7 @@ export function BetOfTheDay() {
             
             <Button 
               className="gap-2 bg-gradient-to-r from-primary to-blue-500 hover:from-primary/90 hover:to-blue-600 group-hover:scale-105 transition-all duration-300"
-              onClick={() => navigate('/bet-of-the-day')}
+              onClick={handleViewFullAnalysis}
             >
               View Full Analysis <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
             </Button>

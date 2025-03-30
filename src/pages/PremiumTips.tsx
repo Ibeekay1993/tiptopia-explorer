@@ -20,6 +20,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 
 // Mock premium tips data
 const premiumTips = [
@@ -66,12 +67,20 @@ const isPremiumTipLocked = (tipId: number) => {
 };
 
 const PremiumTips = () => {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("all");
-  const isSubscribed = false; // Mock subscription status
+  const [isSubscribed, setIsSubscribed] = useState(false); // Mock subscription status
   
   const handleSubscribe = () => {
-    toast.success("Subscription initiated", {
-      description: "Please complete payment to access premium tips"
+    setIsSubscribed(true);
+    toast.success("Successfully subscribed!", {
+      description: "You now have access to all premium tips"
+    });
+  };
+  
+  const handleBackTip = (tipId: number) => {
+    toast.success("Tip added to betslip", {
+      description: `You've backed premium tip #${tipId}`
     });
   };
   
@@ -123,9 +132,9 @@ const PremiumTips = () => {
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
             {premiumTips.map((tip) => (
-              <Card key={tip.id} className={`overflow-hidden group hover:shadow-xl transition-all duration-300 ${isPremiumTipLocked(tip.id) ? "bg-muted/30" : ""}`}>
+              <Card key={tip.id} className={`overflow-hidden group hover:shadow-xl transition-all duration-300 ${isPremiumTipLocked(tip.id) && !isSubscribed ? "bg-muted/30" : ""}`}>
                 <div className="relative">
-                  {isPremiumTipLocked(tip.id) && (
+                  {isPremiumTipLocked(tip.id) && !isSubscribed && (
                     <div className="absolute inset-0 bg-background/80 backdrop-blur-sm flex flex-col items-center justify-center z-10 p-6 text-center">
                       <Lock className="h-12 w-12 text-muted-foreground mb-4" />
                       <h3 className="text-lg font-medium mb-2">Premium Content Locked</h3>
@@ -195,6 +204,13 @@ const PremiumTips = () => {
                         <div className="text-sm font-medium text-muted-foreground mb-1">ANALYSIS</div>
                         <p className="text-sm">{tip.analysis}</p>
                       </div>
+                      
+                      <Button 
+                        className="w-full bg-green-500 hover:bg-green-600 text-white"
+                        onClick={() => handleBackTip(tip.id)}
+                      >
+                        Back This Tip
+                      </Button>
                     </div>
                   </CardContent>
                   
@@ -252,7 +268,11 @@ const PremiumTips = () => {
                         <span className="text-sm">Email notifications</span>
                       </li>
                     </ul>
-                    <Button className="w-full" variant="outline">
+                    <Button 
+                      className="w-full" 
+                      variant="outline"
+                      onClick={handleSubscribe}
+                    >
                       Subscribe Monthly
                     </Button>
                   </div>
@@ -288,7 +308,10 @@ const PremiumTips = () => {
                         <span className="text-sm font-medium">2 months free</span>
                       </li>
                     </ul>
-                    <Button className="w-full" onClick={handleSubscribe}>
+                    <Button 
+                      className="w-full"
+                      onClick={handleSubscribe}
+                    >
                       Subscribe Yearly
                     </Button>
                   </div>

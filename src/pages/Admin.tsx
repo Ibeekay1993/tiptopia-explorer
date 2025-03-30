@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
@@ -53,6 +54,18 @@ const Admin = () => {
     odds: "2.25",
     confidence: "92"
   });
+  const [premiumTip, setPremiumTip] = useState({
+    match: "",
+    league: "",
+    prediction: "",
+    odds: "",
+    confidence: "",
+    date: getFormattedDate(0),
+    time: "12:00",
+    sport: "soccer",
+    analysis: ""
+  });
+  const [premiumTips, setPremiumTips] = useState<any[]>([]);
 
   useEffect(() => {
     let dateOffset = 0;
@@ -101,8 +114,55 @@ const Admin = () => {
   };
 
   const handleUpdateBetOfDay = () => {
+    if (!betOfDay.match || !betOfDay.league || !betOfDay.prediction || !betOfDay.odds || !betOfDay.confidence) {
+      toast.error("Please fill in all required fields", {
+        description: "All fields for Bet of the Day are required"
+      });
+      return;
+    }
+    
     toast.success("Bet of the Day updated successfully", {
       description: "The changes have been saved"
+    });
+  };
+  
+  const handleAddPremiumTip = () => {
+    if (!premiumTip.match || !premiumTip.league || !premiumTip.prediction || !premiumTip.odds || !premiumTip.confidence) {
+      toast.error("Please fill in all required fields", {
+        description: "Match, league, prediction, odds and confidence are required"
+      });
+      return;
+    }
+    
+    const newTip = {
+      id: Date.now(),
+      ...premiumTip
+    };
+    
+    setPremiumTips(prev => [newTip, ...prev]);
+    
+    toast.success("Premium tip added successfully", {
+      description: `${premiumTip.match} has been added to premium tips`
+    });
+    
+    // Reset form
+    setPremiumTip({
+      match: "",
+      league: "",
+      prediction: "",
+      odds: "",
+      confidence: "",
+      date: getFormattedDate(0),
+      time: "12:00",
+      sport: "soccer",
+      analysis: ""
+    });
+  };
+  
+  const handleRemovePremiumTip = (id: number) => {
+    setPremiumTips(prev => prev.filter(tip => tip.id !== id));
+    toast.success("Premium tip removed successfully", {
+      description: "The premium tip has been deleted"
     });
   };
 
@@ -154,8 +214,8 @@ const Admin = () => {
             </Badge>
           </div>
           
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid w-full max-w-4xl grid-cols-5">
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full space-y-6">
+            <TabsList className="grid w-full grid-cols-5">
               <TabsTrigger value="daily-odds">Daily Odds</TabsTrigger>
               <TabsTrigger value="premium-tips">Premium Tips</TabsTrigger>
               <TabsTrigger value="bet-of-day">Bet of the Day</TabsTrigger>
@@ -324,46 +384,89 @@ const Admin = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label htmlFor="p-match">Match</Label>
-                      <Input id="p-match" placeholder="e.g. Team A vs Team B" />
+                      <Input 
+                        id="p-match" 
+                        placeholder="e.g. Team A vs Team B" 
+                        value={premiumTip.match}
+                        onChange={(e) => setPremiumTip({...premiumTip, match: e.target.value})}
+                      />
                     </div>
                     
                     <div className="space-y-2">
                       <Label htmlFor="p-league">League</Label>
-                      <Input id="p-league" placeholder="e.g. Premier League" />
+                      <Input 
+                        id="p-league" 
+                        placeholder="e.g. Premier League" 
+                        value={premiumTip.league}
+                        onChange={(e) => setPremiumTip({...premiumTip, league: e.target.value})}
+                      />
                     </div>
                   </div>
                   
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div className="space-y-2">
                       <Label htmlFor="p-prediction">Prediction</Label>
-                      <Input id="p-prediction" placeholder="e.g. Over 2.5 Goals" />
+                      <Input 
+                        id="p-prediction" 
+                        placeholder="e.g. Over 2.5 Goals" 
+                        value={premiumTip.prediction}
+                        onChange={(e) => setPremiumTip({...premiumTip, prediction: e.target.value})}
+                      />
                     </div>
                     
                     <div className="space-y-2">
                       <Label htmlFor="p-odds">Odds</Label>
-                      <Input id="p-odds" type="number" step="0.01" placeholder="e.g. 1.95" />
+                      <Input 
+                        id="p-odds" 
+                        type="number" 
+                        step="0.01" 
+                        placeholder="e.g. 1.95" 
+                        value={premiumTip.odds}
+                        onChange={(e) => setPremiumTip({...premiumTip, odds: e.target.value})}
+                      />
                     </div>
                     
                     <div className="space-y-2">
                       <Label htmlFor="p-confidence">Confidence (%)</Label>
-                      <Input id="p-confidence" type="number" min="1" max="100" placeholder="e.g. 80" />
+                      <Input 
+                        id="p-confidence" 
+                        type="number" 
+                        min="1" 
+                        max="100" 
+                        placeholder="e.g. 80" 
+                        value={premiumTip.confidence}
+                        onChange={(e) => setPremiumTip({...premiumTip, confidence: e.target.value})}
+                      />
                     </div>
                   </div>
                   
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div className="space-y-2">
                       <Label htmlFor="p-date">Date</Label>
-                      <Input id="p-date" type="date" />
+                      <Input 
+                        id="p-date" 
+                        type="date" 
+                        value={premiumTip.date}
+                        onChange={(e) => setPremiumTip({...premiumTip, date: e.target.value})}
+                      />
                     </div>
                     
                     <div className="space-y-2">
                       <Label htmlFor="p-time">Time</Label>
-                      <Input id="p-time" type="time" />
+                      <Input 
+                        id="p-time" 
+                        type="time" 
+                        value={premiumTip.time}
+                        onChange={(e) => setPremiumTip({...premiumTip, time: e.target.value})}
+                      />
                     </div>
                     
                     <div className="space-y-2">
                       <Label htmlFor="p-sport">Sport</Label>
-                      <Select defaultValue="soccer">
+                      <Select 
+                        value={premiumTip.sport}
+                        onValueChange={(value) => setPremiumTip({...premiumTip, sport: value})}
+                      >
                         <SelectTrigger id="p-sport">
                           <SelectValue placeholder="Select sport" />
                         </SelectTrigger>
@@ -376,12 +479,33 @@ const Admin = () => {
                       </Select>
                     </div>
                   </div>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="p-analysis">Analysis</Label>
+                    <Input
+                      id="p-analysis"
+                      placeholder="Enter detailed analysis for this premium tip"
+                      value={premiumTip.analysis}
+                      onChange={(e) => setPremiumTip({...premiumTip, analysis: e.target.value})}
+                    />
+                  </div>
                 </CardContent>
                 <CardFooter className="flex justify-between">
                   <Button 
                     variant="outline" 
                     className="gap-2"
                     onClick={() => {
+                      setPremiumTip({
+                        match: "",
+                        league: "",
+                        prediction: "",
+                        odds: "",
+                        confidence: "",
+                        date: getFormattedDate(0),
+                        time: "12:00",
+                        sport: "soccer",
+                        analysis: ""
+                      });
                       toast.info("Form cleared", {
                         description: "All fields have been reset"
                       });
@@ -392,17 +516,78 @@ const Admin = () => {
                   </Button>
                   <Button 
                     className="gap-2"
-                    onClick={() => {
-                      toast.success("Premium tip added successfully!", {
-                        description: "The tip is now available to subscribers."
-                      });
-                    }}
+                    onClick={handleAddPremiumTip}
                   >
                     <Check className="h-4 w-4" />
                     Add Premium Tip
                   </Button>
                 </CardFooter>
               </Card>
+              
+              {premiumTips.length > 0 && (
+                <Card>
+                  <CardHeader className="pb-3">
+                    <div className="flex items-center gap-2">
+                      <Crown className="h-5 w-5 text-yellow-500" />
+                      <CardTitle>Manage Premium Tips</CardTitle>
+                    </div>
+                    <CardDescription>
+                      Edit or delete existing premium tips
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="rounded-md border">
+                      <Table>
+                        <TableHeader>
+                          <TableRow>
+                            <TableHead>Match</TableHead>
+                            <TableHead>League</TableHead>
+                            <TableHead>Prediction</TableHead>
+                            <TableHead>Odds</TableHead>
+                            <TableHead>Confidence</TableHead>
+                            <TableHead className="text-right w-[100px]">Actions</TableHead>
+                          </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                          {premiumTips.map((tip) => (
+                            <TableRow key={tip.id}>
+                              <TableCell>{tip.match}</TableCell>
+                              <TableCell>{tip.league}</TableCell>
+                              <TableCell>{tip.prediction}</TableCell>
+                              <TableCell>{tip.odds}</TableCell>
+                              <TableCell>{tip.confidence}%</TableCell>
+                              <TableCell className="text-right">
+                                <Button 
+                                  variant="ghost" 
+                                  size="icon"
+                                  className="h-8 w-8 text-destructive hover:text-destructive hover:bg-destructive/10"
+                                  onClick={() => handleRemovePremiumTip(tip.id)}
+                                >
+                                  <Trash2 className="h-4 w-4" />
+                                </Button>
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </div>
+                  </CardContent>
+                  <CardFooter className="flex justify-end">
+                    <Button 
+                      variant="outline" 
+                      className="gap-2"
+                      onClick={() => {
+                        toast.success("Changes saved successfully!", {
+                          description: "All premium tips have been updated."
+                        });
+                      }}
+                    >
+                      <Save className="h-4 w-4" />
+                      Save Changes
+                    </Button>
+                  </CardFooter>
+                </Card>
+              )}
             </TabsContent>
 
             <TabsContent value="bet-of-day" className="space-y-6">
@@ -549,7 +734,15 @@ const Admin = () => {
                               </TableCell>
                               <TableCell>Today, 14:30</TableCell>
                               <TableCell className="text-right">
-                                <Button variant="outline" size="sm">
+                                <Button 
+                                  variant="outline" 
+                                  size="sm"
+                                  onClick={() => {
+                                    toast.success("API sync initiated", {
+                                      description: "Football data is being updated"
+                                    });
+                                  }}
+                                >
                                   Sync Now
                                 </Button>
                               </TableCell>
@@ -563,7 +756,15 @@ const Admin = () => {
                               </TableCell>
                               <TableCell>Today, 14:25</TableCell>
                               <TableCell className="text-right">
-                                <Button variant="outline" size="sm">
+                                <Button 
+                                  variant="outline" 
+                                  size="sm"
+                                  onClick={() => {
+                                    toast.success("API sync initiated", {
+                                      description: "Odds data is being updated"
+                                    });
+                                  }}
+                                >
                                   Sync Now
                                 </Button>
                               </TableCell>
@@ -577,7 +778,15 @@ const Admin = () => {
                               </TableCell>
                               <TableCell>Yesterday, 09:15</TableCell>
                               <TableCell className="text-right">
-                                <Button variant="outline" size="sm">
+                                <Button 
+                                  variant="outline" 
+                                  size="sm"
+                                  onClick={() => {
+                                    toast.success("API sync initiated", {
+                                      description: "Player stats data is being updated"
+                                    });
+                                  }}
+                                >
                                   Sync Now
                                 </Button>
                               </TableCell>
@@ -601,7 +810,15 @@ const Admin = () => {
                             </Badge>
                             <span>Premier League</span>
                           </div>
-                          <Button variant="ghost" size="sm">
+                          <Button 
+                            variant="ghost" 
+                            size="sm"
+                            onClick={() => {
+                              toast.success("Premier League management", {
+                                description: "You can now manage Premier League settings"
+                              });
+                            }}
+                          >
                             Manage
                           </Button>
                         </div>
@@ -613,7 +830,15 @@ const Admin = () => {
                             </Badge>
                             <span>La Liga</span>
                           </div>
-                          <Button variant="ghost" size="sm">
+                          <Button 
+                            variant="ghost" 
+                            size="sm"
+                            onClick={() => {
+                              toast.success("La Liga management", {
+                                description: "You can now manage La Liga settings"
+                              });
+                            }}
+                          >
                             Manage
                           </Button>
                         </div>
@@ -625,7 +850,15 @@ const Admin = () => {
                             </Badge>
                             <span>Serie A</span>
                           </div>
-                          <Button variant="ghost" size="sm">
+                          <Button 
+                            variant="ghost" 
+                            size="sm"
+                            onClick={() => {
+                              toast.success("Serie A management", {
+                                description: "You can now manage Serie A settings"
+                              });
+                            }}
+                          >
                             Manage
                           </Button>
                         </div>
@@ -637,7 +870,15 @@ const Admin = () => {
                             </Badge>
                             <span>Bundesliga</span>
                           </div>
-                          <Button variant="ghost" size="sm">
+                          <Button 
+                            variant="ghost" 
+                            size="sm"
+                            onClick={() => {
+                              toast.success("Bundesliga activation", {
+                                description: "You can now activate Bundesliga data"
+                              });
+                            }}
+                          >
                             Manage
                           </Button>
                         </div>
@@ -646,10 +887,115 @@ const Admin = () => {
                   </div>
 
                   <div className="pt-4">
-                    <Button className="gap-2">
+                    <Button 
+                      className="gap-2"
+                      onClick={() => {
+                        toast.success("Add new data source", {
+                          description: "You can now configure a new data source"
+                        });
+                      }}
+                    >
                       <PlusCircle className="h-4 w-4" />
                       Add New Data Source
                     </Button>
+                  </div>
+                </CardContent>
+              </Card>
+              
+              <Card>
+                <CardHeader>
+                  <div className="flex items-center gap-2">
+                    <Calendar className="h-5 w-5 text-primary" />
+                    <CardTitle>Upcoming Matches</CardTitle>
+                  </div>
+                  <CardDescription>
+                    View and manage upcoming football fixtures
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="rounded-md border">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Date</TableHead>
+                          <TableHead>Match</TableHead>
+                          <TableHead>League</TableHead>
+                          <TableHead>Status</TableHead>
+                          <TableHead className="text-right">Actions</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        <TableRow>
+                          <TableCell>Today, 20:00</TableCell>
+                          <TableCell>Manchester City vs Chelsea</TableCell>
+                          <TableCell>Premier League</TableCell>
+                          <TableCell>
+                            <Badge className="bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400">
+                              Upcoming
+                            </Badge>
+                          </TableCell>
+                          <TableCell className="text-right">
+                            <Button 
+                              variant="outline" 
+                              size="sm"
+                              onClick={() => {
+                                toast.success("Match details", {
+                                  description: "You can now edit Manchester City vs Chelsea details"
+                                });
+                              }}
+                            >
+                              Edit
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell>Tomorrow, 15:00</TableCell>
+                          <TableCell>Arsenal vs Liverpool</TableCell>
+                          <TableCell>Premier League</TableCell>
+                          <TableCell>
+                            <Badge className="bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400">
+                              Upcoming
+                            </Badge>
+                          </TableCell>
+                          <TableCell className="text-right">
+                            <Button 
+                              variant="outline" 
+                              size="sm"
+                              onClick={() => {
+                                toast.success("Match details", {
+                                  description: "You can now edit Arsenal vs Liverpool details"
+                                });
+                              }}
+                            >
+                              Edit
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell>Tomorrow, 20:45</TableCell>
+                          <TableCell>Barcelona vs Real Madrid</TableCell>
+                          <TableCell>La Liga</TableCell>
+                          <TableCell>
+                            <Badge className="bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400">
+                              Upcoming
+                            </Badge>
+                          </TableCell>
+                          <TableCell className="text-right">
+                            <Button 
+                              variant="outline" 
+                              size="sm"
+                              onClick={() => {
+                                toast.success("Match details", {
+                                  description: "You can now edit Barcelona vs Real Madrid details"
+                                });
+                              }}
+                            >
+                              Edit
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      </TableBody>
+                    </Table>
                   </div>
                 </CardContent>
               </Card>
