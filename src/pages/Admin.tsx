@@ -22,7 +22,7 @@ import {
   Trophy,
   BarChart4,
   Crown,
-  FootballIcon,
+  SoccerBall,
   Database
 } from "lucide-react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -519,7 +519,7 @@ const Admin = () => {
               <Card>
                 <CardHeader>
                   <div className="flex items-center gap-2">
-                    <FootballIcon className="h-5 w-5 text-green-500" />
+                    <SoccerBall className="h-5 w-5 text-green-500" />
                     <CardTitle>Football Data Management</CardTitle>
                   </div>
                   <CardDescription>
