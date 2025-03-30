@@ -5,19 +5,13 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { TrendingUp, Trophy, Calendar, ArrowRight, Star } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { mockBetOfDayData } from "@/components/BetOfTheDay/BetData";
 
 export function BetOfTheDay() {
   const navigate = useNavigate();
   
-  // In a real application, this would come from an API or database
-  const todaysBet = {
-    match: "Manchester City vs Chelsea",
-    league: "Premier League",
-    date: new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' }),
-    time: "20:00",
-    odds: 2.25,
-    confidence: 92,
-  };
+  // Use the same data as the detailed page for consistency
+  const todaysBet = mockBetOfDayData;
 
   const handleViewFullAnalysis = () => {
     navigate('/bet-of-the-day');
