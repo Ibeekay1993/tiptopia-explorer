@@ -1,7 +1,7 @@
 
 import React from 'react';
-import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 
 interface CardFooterActionsProps {
   handleBackBet: () => void;
@@ -23,21 +23,12 @@ export function CardFooterActions({ handleBackBet }: CardFooterActionsProps) {
         <span className="ml-3 text-sm text-muted-foreground">1,250+ users backing this bet</span>
       </div>
       
-      <div className="flex gap-2">
-        <Button 
-          variant="outline"
-          onClick={() => navigate(-1)}
-        >
-          Back to Home
-        </Button>
-        
-        <Button 
-          className="gap-2 bg-green-500 hover:bg-green-600 text-white"
-          onClick={handleBackBet}
-        >
-          Back This Bet
-        </Button>
-      </div>
+      <Button 
+        onClick={() => navigate(-1)}
+        variant="outline"
+      >
+        Back to Home
+      </Button>
     </div>
   );
 }

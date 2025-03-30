@@ -7,10 +7,16 @@ interface TabNavigationProps {
 }
 
 export function TabNavigation({ activeTab, setActiveTab }: TabNavigationProps) {
+  const handleTabChange = (tab: string) => {
+    // Scroll to top when changing tabs
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setActiveTab(tab);
+  };
+  
   return (
     <div className="tabs flex">
       <button 
-        onClick={() => setActiveTab("overview")}
+        onClick={() => handleTabChange("overview")}
         className={`px-4 py-2 font-medium text-sm ${activeTab === "overview" ? 
           "border-b-2 border-primary text-primary" : 
           "text-muted-foreground hover:text-foreground transition-colors"}`}
@@ -18,7 +24,7 @@ export function TabNavigation({ activeTab, setActiveTab }: TabNavigationProps) {
         Overview
       </button>
       <button 
-        onClick={() => setActiveTab("analysis")}
+        onClick={() => handleTabChange("analysis")}
         className={`px-4 py-2 font-medium text-sm ${activeTab === "analysis" ? 
           "border-b-2 border-primary text-primary" : 
           "text-muted-foreground hover:text-foreground transition-colors"}`}
@@ -26,7 +32,7 @@ export function TabNavigation({ activeTab, setActiveTab }: TabNavigationProps) {
         Expert Analysis
       </button>
       <button 
-        onClick={() => setActiveTab("team-stats")}
+        onClick={() => handleTabChange("team-stats")}
         className={`px-4 py-2 font-medium text-sm ${activeTab === "team-stats" ? 
           "border-b-2 border-primary text-primary" : 
           "text-muted-foreground hover:text-foreground transition-colors"}`}
