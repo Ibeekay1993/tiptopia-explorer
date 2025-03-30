@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
@@ -22,7 +21,7 @@ import {
   Trophy,
   BarChart4,
   Crown,
-  SoccerBall,
+  Dumbbell,
   Database
 } from "lucide-react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -30,7 +29,6 @@ import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { dailyOdds, DailyOdd } from "@/data/dailyOdds";
 
-// Helper function to get formatted date based on day selection
 const getFormattedDate = (dayOffset: number = 0): string => {
   const date = new Date();
   date.setDate(date.getDate() + dayOffset);
@@ -38,13 +36,13 @@ const getFormattedDate = (dayOffset: number = 0): string => {
 };
 
 const Admin = () => {
-  const [isAdmin, setIsAdmin] = useState(true); // In a real app, this would be determined by authentication
+  const [isAdmin, setIsAdmin] = useState(true);
   const [newOdd, setNewOdd] = useState<Omit<DailyOdd, 'id'>>({
     league: "",
     match: "",
     prediction: "",
     day: "today",
-    date: getFormattedDate(0) // Current date by default
+    date: getFormattedDate(0)
   });
   const [existingOdds, setExistingOdds] = useState<DailyOdd[]>([...dailyOdds]);
   const [activeTab, setActiveTab] = useState("daily-odds");
@@ -55,8 +53,7 @@ const Admin = () => {
     odds: "2.25",
     confidence: "92"
   });
-  
-  // Update date when day changes
+
   useEffect(() => {
     let dateOffset = 0;
     if (newOdd.day === "yesterday") dateOffset = -1;
@@ -67,7 +64,7 @@ const Admin = () => {
       date: getFormattedDate(dateOffset)
     }));
   }, [newOdd.day]);
-  
+
   const handleAddOdd = () => {
     if (!newOdd.league || !newOdd.match || !newOdd.prediction) {
       toast.error("Please fill in all fields", {
@@ -87,7 +84,6 @@ const Admin = () => {
       description: `${newOdd.match} has been added to ${newOdd.day}'s odds`
     });
     
-    // Reset form
     setNewOdd({
       league: "",
       match: "",
@@ -109,8 +105,7 @@ const Admin = () => {
       description: "The changes have been saved"
     });
   };
-  
-  // For demo purposes only - in a real app this would be handled by authentication
+
   if (!isAdmin) {
     return (
       <div className="min-h-screen flex flex-col">
@@ -139,7 +134,7 @@ const Admin = () => {
       </div>
     );
   }
-  
+
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
@@ -519,14 +514,14 @@ const Admin = () => {
               <Card>
                 <CardHeader>
                   <div className="flex items-center gap-2">
-                    <SoccerBall className="h-5 w-5 text-green-500" />
+                    <Dumbbell className="h-5 w-5 text-green-500" />
                     <CardTitle>Football Data Management</CardTitle>
                   </div>
                   <CardDescription>
                     Manage football leagues, teams, and match data
                   </CardDescription>
                 </CardHeader>
-                <CardContent className="space-y-4">
+                <CardContent>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-4">
                       <div className="flex items-center gap-2">

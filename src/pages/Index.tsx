@@ -1,4 +1,3 @@
-
 import { HeroSection } from "@/components/HeroSection";
 import { BetOfTheDay } from "@/components/BetOfTheDay";
 import { DailyOddsSnippet } from "@/components/DailyOddsSnippet";
@@ -7,7 +6,7 @@ import { SubscriptionSection } from "@/components/SubscriptionSection";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { Button } from "@/components/ui/button";
-import { Brain, Crown, BarChart, Trophy, SoccerBall } from "lucide-react";
+import { Brain, Crown, BarChart, Trophy, Dumbbell } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
 
@@ -100,7 +99,7 @@ const Index = () => {
             
             <Card className="bg-gradient-to-br from-cyan-50 to-blue-50 border-none shadow-md hover:shadow-lg transition-shadow dark:from-cyan-950/20 dark:to-blue-950/20">
               <CardContent className="flex flex-col items-center text-center p-8">
-                <SoccerBall className="h-16 w-16 text-cyan-500 mb-4" />
+                <Dumbbell className="h-16 w-16 text-cyan-500 mb-4" />
                 <h3 className="text-2xl font-bold mb-2">Football Data</h3>
                 <p className="text-muted-foreground mb-6">
                   Comprehensive stats and data for all major football leagues and teams
@@ -109,7 +108,7 @@ const Index = () => {
                   onClick={() => navigate('/daily-odds')}
                   className="gap-2 bg-gradient-to-r from-cyan-500 to-blue-500"
                 >
-                  <SoccerBall className="h-4 w-4" />
+                  <Dumbbell className="h-4 w-4" />
                   Explore Football Data
                 </Button>
               </CardContent>
