@@ -14,6 +14,7 @@ import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
 import AIBettingAssistant from "./pages/AIBettingAssistant";
 import PremiumTips from "./pages/PremiumTips";
+import BetOfTheDayPage from "./pages/BetOfTheDay";
 
 // Create a client
 const queryClient = new QueryClient();
@@ -34,6 +35,7 @@ const App = () => (
               <Route path="/admin" element={<Admin />} />
               <Route path="/ai-assistant" element={<AIBettingAssistant />} />
               <Route path="/premium-tips" element={<PremiumTips />} />
+              <Route path="/bet-of-the-day" element={<BetOfTheDayPage />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>

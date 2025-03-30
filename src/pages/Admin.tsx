@@ -17,7 +17,13 @@ import {
   Check,
   X,
   CalendarClock,
-  Calendar
+  Calendar,
+  TrendingUp,
+  Trophy,
+  BarChart4,
+  Crown,
+  FootballIcon,
+  Database
 } from "lucide-react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
@@ -41,6 +47,14 @@ const Admin = () => {
     date: getFormattedDate(0) // Current date by default
   });
   const [existingOdds, setExistingOdds] = useState<DailyOdd[]>([...dailyOdds]);
+  const [activeTab, setActiveTab] = useState("daily-odds");
+  const [betOfDay, setBetOfDay] = useState({
+    match: "Manchester City vs Chelsea",
+    league: "Premier League",
+    prediction: "Manchester City to Win & Over 2.5",
+    odds: "2.25",
+    confidence: "92"
+  });
   
   // Update date when day changes
   useEffect(() => {
@@ -87,6 +101,12 @@ const Admin = () => {
     setExistingOdds(prev => prev.filter(odd => odd.id !== id));
     toast.success("Odds removed successfully", {
       description: "The odds have been deleted from the system"
+    });
+  };
+
+  const handleUpdateBetOfDay = () => {
+    toast.success("Bet of the Day updated successfully", {
+      description: "The changes have been saved"
     });
   };
   
@@ -139,10 +159,13 @@ const Admin = () => {
             </Badge>
           </div>
           
-          <Tabs defaultValue="daily-odds" className="w-full">
-            <TabsList className="grid w-full max-w-md grid-cols-2">
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+            <TabsList className="grid w-full max-w-4xl grid-cols-5">
               <TabsTrigger value="daily-odds">Daily Odds</TabsTrigger>
               <TabsTrigger value="premium-tips">Premium Tips</TabsTrigger>
+              <TabsTrigger value="bet-of-day">Bet of the Day</TabsTrigger>
+              <TabsTrigger value="football-data">Football Data</TabsTrigger>
+              <TabsTrigger value="analytics">Analytics</TabsTrigger>
             </TabsList>
             
             <TabsContent value="daily-odds" className="space-y-6">
@@ -294,7 +317,10 @@ const Admin = () => {
             <TabsContent value="premium-tips" className="space-y-6">
               <Card>
                 <CardHeader>
-                  <CardTitle>Add Premium Tip</CardTitle>
+                  <div className="flex items-center gap-2">
+                    <Crown className="h-5 w-5 text-yellow-500" />
+                    <CardTitle>Add Premium Tip</CardTitle>
+                  </div>
                   <CardDescription>
                     Create new premium tips for subscribers
                   </CardDescription>
@@ -381,6 +407,359 @@ const Admin = () => {
                     Add Premium Tip
                   </Button>
                 </CardFooter>
+              </Card>
+            </TabsContent>
+
+            <TabsContent value="bet-of-day" className="space-y-6">
+              <Card>
+                <CardHeader>
+                  <div className="flex items-center gap-2">
+                    <Trophy className="h-5 w-5 text-yellow-500" />
+                    <CardTitle>Manage Bet of the Day</CardTitle>
+                  </div>
+                  <CardDescription>
+                    Update the featured bet of the day that appears on the homepage
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="bod-match">Match</Label>
+                      <Input 
+                        id="bod-match" 
+                        placeholder="e.g. Team A vs Team B" 
+                        value={betOfDay.match}
+                        onChange={(e) => setBetOfDay({...betOfDay, match: e.target.value})}
+                      />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="bod-league">League</Label>
+                      <Input 
+                        id="bod-league" 
+                        placeholder="e.g. Premier League" 
+                        value={betOfDay.league}
+                        onChange={(e) => setBetOfDay({...betOfDay, league: e.target.value})}
+                      />
+                    </div>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="bod-prediction">Prediction</Label>
+                      <Input 
+                        id="bod-prediction" 
+                        placeholder="e.g. Over 2.5 Goals" 
+                        value={betOfDay.prediction}
+                        onChange={(e) => setBetOfDay({...betOfDay, prediction: e.target.value})}
+                      />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="bod-odds">Odds</Label>
+                      <Input 
+                        id="bod-odds" 
+                        type="text" 
+                        placeholder="e.g. 1.95" 
+                        value={betOfDay.odds}
+                        onChange={(e) => setBetOfDay({...betOfDay, odds: e.target.value})}
+                      />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="bod-confidence">Confidence (%)</Label>
+                      <Input 
+                        id="bod-confidence" 
+                        type="text" 
+                        placeholder="e.g. 90" 
+                        value={betOfDay.confidence}
+                        onChange={(e) => setBetOfDay({...betOfDay, confidence: e.target.value})}
+                      />
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="bod-analysis">Analysis</Label>
+                    <Input 
+                      id="bod-analysis" 
+                      placeholder="Enter detailed analysis for this bet" 
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="bod-h2h">Head-to-Head</Label>
+                      <Input id="bod-h2h" placeholder="e.g. Team A won 6 of last 8" />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="bod-goals">Goals</Label>
+                      <Input id="bod-goals" placeholder="e.g. Over 2.5 in 80% of matches" />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="bod-form">Team Form</Label>
+                      <Input id="bod-form" placeholder="e.g. Team A: WWWWD, Team B: WDLWL" />
+                    </div>
+                  </div>
+                </CardContent>
+                <CardFooter className="flex justify-end">
+                  <Button 
+                    className="gap-2"
+                    onClick={handleUpdateBetOfDay}
+                  >
+                    <Save className="h-4 w-4" />
+                    Update Bet of the Day
+                  </Button>
+                </CardFooter>
+              </Card>
+            </TabsContent>
+
+            <TabsContent value="football-data" className="space-y-6">
+              <Card>
+                <CardHeader>
+                  <div className="flex items-center gap-2">
+                    <FootballIcon className="h-5 w-5 text-green-500" />
+                    <CardTitle>Football Data Management</CardTitle>
+                  </div>
+                  <CardDescription>
+                    Manage football leagues, teams, and match data
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-4">
+                      <div className="flex items-center gap-2">
+                        <Database className="h-4 w-4 text-primary" />
+                        <h3 className="text-lg font-medium">Data Sources</h3>
+                      </div>
+                      
+                      <div className="rounded-md border">
+                        <Table>
+                          <TableHeader>
+                            <TableRow>
+                              <TableHead>API Name</TableHead>
+                              <TableHead>Status</TableHead>
+                              <TableHead>Last Updated</TableHead>
+                              <TableHead className="text-right">Actions</TableHead>
+                            </TableRow>
+                          </TableHeader>
+                          <TableBody>
+                            <TableRow>
+                              <TableCell>Football Data API</TableCell>
+                              <TableCell>
+                                <Badge className="bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">
+                                  Active
+                                </Badge>
+                              </TableCell>
+                              <TableCell>Today, 14:30</TableCell>
+                              <TableCell className="text-right">
+                                <Button variant="outline" size="sm">
+                                  Sync Now
+                                </Button>
+                              </TableCell>
+                            </TableRow>
+                            <TableRow>
+                              <TableCell>Odds API</TableCell>
+                              <TableCell>
+                                <Badge className="bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">
+                                  Active
+                                </Badge>
+                              </TableCell>
+                              <TableCell>Today, 14:25</TableCell>
+                              <TableCell className="text-right">
+                                <Button variant="outline" size="sm">
+                                  Sync Now
+                                </Button>
+                              </TableCell>
+                            </TableRow>
+                            <TableRow>
+                              <TableCell>Player Stats API</TableCell>
+                              <TableCell>
+                                <Badge className="bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400">
+                                  Pending
+                                </Badge>
+                              </TableCell>
+                              <TableCell>Yesterday, 09:15</TableCell>
+                              <TableCell className="text-right">
+                                <Button variant="outline" size="sm">
+                                  Sync Now
+                                </Button>
+                              </TableCell>
+                            </TableRow>
+                          </TableBody>
+                        </Table>
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-4">
+                      <div className="flex items-center gap-2">
+                        <TrendingUp className="h-4 w-4 text-primary" />
+                        <h3 className="text-lg font-medium">Leagues & Competitions</h3>
+                      </div>
+                      
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between p-3 rounded-md bg-muted/50">
+                          <div className="flex items-center gap-2">
+                            <Badge className="bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400">
+                              Active
+                            </Badge>
+                            <span>Premier League</span>
+                          </div>
+                          <Button variant="ghost" size="sm">
+                            Manage
+                          </Button>
+                        </div>
+                        
+                        <div className="flex items-center justify-between p-3 rounded-md bg-muted/50">
+                          <div className="flex items-center gap-2">
+                            <Badge className="bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400">
+                              Active
+                            </Badge>
+                            <span>La Liga</span>
+                          </div>
+                          <Button variant="ghost" size="sm">
+                            Manage
+                          </Button>
+                        </div>
+                        
+                        <div className="flex items-center justify-between p-3 rounded-md bg-muted/50">
+                          <div className="flex items-center gap-2">
+                            <Badge className="bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400">
+                              Active
+                            </Badge>
+                            <span>Serie A</span>
+                          </div>
+                          <Button variant="ghost" size="sm">
+                            Manage
+                          </Button>
+                        </div>
+                        
+                        <div className="flex items-center justify-between p-3 rounded-md bg-muted/50">
+                          <div className="flex items-center gap-2">
+                            <Badge className="bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400">
+                              Inactive
+                            </Badge>
+                            <span>Bundesliga</span>
+                          </div>
+                          <Button variant="ghost" size="sm">
+                            Manage
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="pt-4">
+                    <Button className="gap-2">
+                      <PlusCircle className="h-4 w-4" />
+                      Add New Data Source
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            <TabsContent value="analytics" className="space-y-6">
+              <Card>
+                <CardHeader>
+                  <div className="flex items-center gap-2">
+                    <BarChart4 className="h-5 w-5 text-primary" />
+                    <CardTitle>Analytics Dashboard</CardTitle>
+                  </div>
+                  <CardDescription>
+                    Monitor platform performance and user engagement
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                    <Card>
+                      <CardContent className="pt-6">
+                        <div className="text-center">
+                          <div className="text-3xl font-bold text-primary">5,280</div>
+                          <p className="text-muted-foreground">Total Users</p>
+                        </div>
+                      </CardContent>
+                    </Card>
+                    
+                    <Card>
+                      <CardContent className="pt-6">
+                        <div className="text-center">
+                          <div className="text-3xl font-bold text-green-500">82%</div>
+                          <p className="text-muted-foreground">Prediction Accuracy</p>
+                        </div>
+                      </CardContent>
+                    </Card>
+                    
+                    <Card>
+                      <CardContent className="pt-6">
+                        <div className="text-center">
+                          <div className="text-3xl font-bold text-yellow-500">420</div>
+                          <p className="text-muted-foreground">Premium Subscribers</p>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
+                  
+                  <div className="space-y-6">
+                    <div>
+                      <h3 className="text-lg font-medium mb-4">Most Popular Tips</h3>
+                      <div className="rounded-md border">
+                        <Table>
+                          <TableHeader>
+                            <TableRow>
+                              <TableHead>Match</TableHead>
+                              <TableHead>Prediction</TableHead>
+                              <TableHead>Users Backing</TableHead>
+                              <TableHead>Result</TableHead>
+                            </TableRow>
+                          </TableHeader>
+                          <TableBody>
+                            <TableRow>
+                              <TableCell>Manchester City vs Chelsea</TableCell>
+                              <TableCell>Man City Win & Over 2.5</TableCell>
+                              <TableCell>1,250</TableCell>
+                              <TableCell>
+                                <Badge className="bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">
+                                  Won
+                                </Badge>
+                              </TableCell>
+                            </TableRow>
+                            <TableRow>
+                              <TableCell>Arsenal vs Liverpool</TableCell>
+                              <TableCell>BTTS & Over 2.5</TableCell>
+                              <TableCell>985</TableCell>
+                              <TableCell>
+                                <Badge className="bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">
+                                  Won
+                                </Badge>
+                              </TableCell>
+                            </TableRow>
+                            <TableRow>
+                              <TableCell>Barcelona vs Real Madrid</TableCell>
+                              <TableCell>Barcelona Win</TableCell>
+                              <TableCell>872</TableCell>
+                              <TableCell>
+                                <Badge className="bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400">
+                                  Lost
+                                </Badge>
+                              </TableCell>
+                            </TableRow>
+                          </TableBody>
+                        </Table>
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <h3 className="text-lg font-medium mb-4">User Engagement</h3>
+                      <div className="h-[300px] bg-muted/50 rounded-md flex items-center justify-center">
+                        <p className="text-muted-foreground">
+                          Chart data visualization will appear here
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
               </Card>
             </TabsContent>
           </Tabs>

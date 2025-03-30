@@ -18,12 +18,6 @@ export function BetOfTheDay() {
     prediction: "Manchester City to Win & Over 2.5",
     odds: 2.25,
     confidence: 92,
-    analysis: "Manchester City have been in excellent form at home, winning their last 7 matches and scoring at least 2 goals in each. Chelsea have struggled defensively away from home, conceding in 9 of their last 10 away games.",
-    stats: [
-      { label: "Head-to-Head", value: "City won 6 of last 8" },
-      { label: "Goals", value: "Over 2.5 in 80% of matches" },
-      { label: "Form", value: "City: WWWWD, Chelsea: WDLWL" }
-    ]
   };
 
   return (
@@ -42,9 +36,9 @@ export function BetOfTheDay() {
           </Badge>
         </div>
         
-        <Card className="overflow-hidden border-none shadow-xl bg-background/90 backdrop-blur-sm">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl from-primary/10 to-transparent rounded-full -mr-32 -mt-32 z-0"></div>
-          <div className="absolute bottom-0 left-0 w-64 h-64 bg-gradient-to-tr from-blue-500/10 to-transparent rounded-full -ml-32 -mb-32 z-0"></div>
+        <Card className="overflow-hidden border-none shadow-xl bg-background/90 backdrop-blur-sm group hover:shadow-2xl transition-all duration-300">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl from-primary/10 to-transparent rounded-full -mr-32 -mt-32 z-0 group-hover:from-primary/20 transition-all duration-300"></div>
+          <div className="absolute bottom-0 left-0 w-64 h-64 bg-gradient-to-tr from-blue-500/10 to-transparent rounded-full -ml-32 -mb-32 z-0 group-hover:from-blue-500/20 transition-all duration-300"></div>
           
           <CardHeader className="relative z-10">
             <div className="flex items-center justify-between">
@@ -72,26 +66,12 @@ export function BetOfTheDay() {
             </div>
           </CardHeader>
           
-          <CardContent className="relative z-10">
-            <div className="mb-6">
+          <CardContent className="relative z-10 pb-4">
+            <div className="mb-4">
               <div className="text-sm font-medium text-muted-foreground mb-1">PREDICTION</div>
               <div className="p-3 rounded-md bg-primary/10 border border-primary/20 font-semibold text-primary text-center">
                 {todaysBet.prediction}
               </div>
-            </div>
-            
-            <div className="mb-6">
-              <div className="text-sm font-medium text-muted-foreground mb-2">ANALYSIS</div>
-              <p className="text-sm">{todaysBet.analysis}</p>
-            </div>
-            
-            <div className="grid grid-cols-3 gap-4">
-              {todaysBet.stats.map((stat, index) => (
-                <div key={index} className="bg-muted/50 p-3 rounded-md">
-                  <div className="text-xs font-medium text-muted-foreground mb-1">{stat.label}</div>
-                  <div className="text-sm font-medium">{stat.value}</div>
-                </div>
-              ))}
             </div>
           </CardContent>
           
@@ -108,10 +88,10 @@ export function BetOfTheDay() {
             </div>
             
             <Button 
-              className="gap-2 bg-gradient-to-r from-primary to-blue-500 hover:from-primary/90 hover:to-blue-600"
-              onClick={() => navigate('/daily-odds')}
+              className="gap-2 bg-gradient-to-r from-primary to-blue-500 hover:from-primary/90 hover:to-blue-600 group-hover:scale-105 transition-all duration-300"
+              onClick={() => navigate('/bet-of-the-day')}
             >
-              More Expert Picks <ArrowRight className="h-4 w-4" />
+              View Full Analysis <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
             </Button>
           </CardFooter>
         </Card>

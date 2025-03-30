@@ -1,7 +1,7 @@
 
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Menu, X, LogIn, User } from "lucide-react";
+import { Menu, X, LogIn, User, Trophy } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { cn } from "@/lib/utils";
@@ -41,6 +41,15 @@ export function Header() {
             </Link>
             <Link to="/daily-odds" className="text-sm font-medium text-foreground/80 hover:text-foreground transition-colors">
               Daily Odds
+            </Link>
+            <Link to="/bet-of-the-day" className="text-sm font-medium text-foreground/80 hover:text-foreground transition-colors">
+              Bet of the Day
+            </Link>
+            <Link to="/ai-assistant" className="text-sm font-medium text-foreground/80 hover:text-foreground transition-colors">
+              AI Assistant
+            </Link>
+            <Link to="/premium-tips" className="text-sm font-medium text-foreground/80 hover:text-foreground transition-colors">
+              Premium Tips
             </Link>
             <Link to="/profile" className="text-sm font-medium text-foreground/80 hover:text-foreground transition-colors">
               Profile
@@ -128,6 +137,27 @@ export function Header() {
             onClick={() => setIsMenuOpen(false)}
           >
             Daily Odds
+          </Link>
+          <Link
+            to="/bet-of-the-day"
+            className="text-sm font-medium text-foreground/80 hover:text-foreground transition-colors"
+            onClick={() => setIsMenuOpen(false)}
+          >
+            Bet of the Day
+          </Link>
+          <Link
+            to="/ai-assistant"
+            className="text-sm font-medium text-foreground/80 hover:text-foreground transition-colors"
+            onClick={() => setIsMenuOpen(false)}
+          >
+            AI Assistant
+          </Link>
+          <Link
+            to="/premium-tips"
+            className="text-sm font-medium text-foreground/80 hover:text-foreground transition-colors"
+            onClick={() => setIsMenuOpen(false)}
+          >
+            Premium Tips
           </Link>
           <Link
             to="/profile"
