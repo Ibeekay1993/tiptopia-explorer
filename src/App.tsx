@@ -15,7 +15,7 @@ import NotFound from "./pages/NotFound";
 import PremiumTips from "./pages/PremiumTips";
 import BetOfTheDayPage from "./pages/BetOfTheDay";
 
-// ScrollToTop component to handle scrolling to top on route change
+// ScrollToTop component to ensure content starts at the top when navigating
 function ScrollToTop() {
   const { pathname } = useLocation();
 

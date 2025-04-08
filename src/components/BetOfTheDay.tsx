@@ -75,7 +75,7 @@ export function BetOfTheDay() {
             </div>
           </CardContent>
           
-          <CardFooter className="relative z-10 flex justify-between items-center bg-muted/30 border-t">
+          <CardFooter className="relative z-10 flex justify-center items-center bg-muted/30 border-t">
             <div className="flex items-center">
               <div className="flex -space-x-2">
                 {[1, 2, 3].map((i) => (
@@ -86,13 +86,6 @@ export function BetOfTheDay() {
               </div>
               <span className="ml-3 text-sm text-muted-foreground">1,250+ users backing this bet</span>
             </div>
-            
-            <Button 
-              className="gap-2 bg-gradient-to-r from-primary to-blue-500 hover:from-primary/90 hover:to-blue-600 group-hover:scale-105 transition-all duration-300"
-              onClick={handleViewFullAnalysis}
-            >
-              View Full Analysis <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
-            </Button>
           </CardFooter>
         </Card>
       </div>

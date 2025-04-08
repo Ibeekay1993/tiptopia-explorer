@@ -22,6 +22,9 @@ const Index = () => {
         <BetOfTheDay />
         <DailyOddsSnippet />
         
+        <FeaturedTips />
+        <SubscriptionSection />
+        
         <div className="container py-8">
           <h2 className="text-2xl font-bold mb-6">Explore TipTopia Features</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -32,13 +35,15 @@ const Index = () => {
                 <p className="text-muted-foreground mb-6">
                   Get accurate football predictions based on statistics and expert analysis
                 </p>
-                <Button 
-                  onClick={() => navigate('/predictions')}
-                  className="gap-2 bg-gradient-to-r from-primary to-blue-500"
-                >
-                  <Brain className="h-4 w-4" />
-                  View Predictions
-                </Button>
+                <div className="flex justify-center w-full">
+                  <Button 
+                    onClick={() => navigate('/predictions')}
+                    className="gap-2 bg-gradient-to-r from-primary to-blue-500"
+                  >
+                    <Brain className="h-4 w-4" />
+                    View All Predictions
+                  </Button>
+                </div>
               </CardContent>
             </Card>
             
@@ -49,13 +54,15 @@ const Index = () => {
                 <p className="text-muted-foreground mb-6">
                   Exclusive high-confidence tips with detailed analysis and insights
                 </p>
-                <Button 
-                  onClick={() => navigate('/premium-tips')}
-                  className="gap-2 bg-gradient-to-r from-yellow-500 to-amber-500"
-                >
-                  <Crown className="h-4 w-4" />
-                  View Premium Tips
-                </Button>
+                <div className="flex justify-center w-full">
+                  <Button 
+                    onClick={() => navigate('/premium-tips')}
+                    className="gap-2 bg-gradient-to-r from-yellow-500 to-amber-500"
+                  >
+                    <Crown className="h-4 w-4" />
+                    View Premium Tips
+                  </Button>
+                </div>
               </CardContent>
             </Card>
             
@@ -66,20 +73,19 @@ const Index = () => {
                 <p className="text-muted-foreground mb-6">
                   Our expert analysts' top pick with the highest confidence level
                 </p>
-                <Button 
-                  onClick={() => navigate('/bet-of-the-day')}
-                  className="gap-2 bg-gradient-to-r from-green-500 to-emerald-500"
-                >
-                  <Trophy className="h-4 w-4" />
-                  See Today's Best Bet
-                </Button>
+                <div className="flex justify-center w-full">
+                  <Button 
+                    onClick={() => navigate('/bet-of-the-day')}
+                    className="gap-2 bg-gradient-to-r from-green-500 to-emerald-500"
+                  >
+                    <Trophy className="h-4 w-4" />
+                    See Today's Best Bet
+                  </Button>
+                </div>
               </CardContent>
             </Card>
           </div>
         </div>
-        
-        <FeaturedTips />
-        <SubscriptionSection />
       </main>
       <Footer />
     </div>

@@ -11,7 +11,7 @@ export function CardFooterActions({ handleBackBet }: CardFooterActionsProps) {
   const navigate = useNavigate();
   
   return (
-    <div className="flex flex-col sm:flex-row justify-between items-center gap-4 bg-muted/30 border-t py-4">
+    <div className="flex flex-col sm:flex-row justify-center items-center gap-4 bg-muted/30 border-t py-4">
       <div className="flex items-center">
         <div className="flex -space-x-2">
           {[1, 2, 3].map((i) => (
@@ -26,6 +26,7 @@ export function CardFooterActions({ handleBackBet }: CardFooterActionsProps) {
       <Button 
         onClick={() => navigate(-1)}
         variant="outline"
+        className="mx-auto"
       >
         Back to Home
       </Button>
