@@ -2,7 +2,6 @@
 import React from 'react';
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Trophy, Calendar, TrendingUp, Sparkles } from "lucide-react";
 
 interface MatchHeaderProps {
@@ -65,13 +64,6 @@ export function MatchHeader({
           <div className="text-center">
             <div className="text-sm text-muted-foreground mb-1">Odds</div>
             <div className="text-3xl font-bold text-primary animate-pulse">{odds}</div>
-            <Button 
-              onClick={handleBackBet}
-              className="mt-2 bg-green-500 hover:bg-green-600 text-white"
-              size="sm"
-            >
-              Back This Bet
-            </Button>
           </div>
         </div>
         

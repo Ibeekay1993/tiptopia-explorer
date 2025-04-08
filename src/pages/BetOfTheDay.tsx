@@ -31,6 +31,11 @@ const BetOfTheDayPage = () => {
   // Use the mock data from the new BetData.ts file
   const todaysBet = mockBetOfDayData;
 
+  // Scroll to top on initial page load but not on tab changes
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   // Animate stats on page load
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -78,30 +83,32 @@ const BetOfTheDayPage = () => {
               <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl from-primary/10 to-transparent rounded-full -mr-32 -mt-32 z-0 group-hover:from-primary/20 transition-all duration-500"></div>
               <div className="absolute bottom-0 left-0 w-64 h-64 bg-gradient-to-tr from-blue-500/10 to-transparent rounded-full -ml-32 -mb-32 z-0 group-hover:from-blue-500/20 transition-all duration-500"></div>
               
-              <CardContent className="relative z-10">
+              <CardContent className="relative z-10 pt-6">
                 <div className="space-y-6">
                   {/* Tab Navigation */}
                   <TabNavigation activeTab={activeTab} setActiveTab={setActiveTab} />
 
                   {/* Tab Content */}
-                  {activeTab === "overview" && (
-                    <OverviewTab stats={todaysBet.stats} />
-                  )}
+                  <div className="min-h-[300px]">
+                    {activeTab === "overview" && (
+                      <OverviewTab stats={todaysBet.stats} />
+                    )}
 
-                  {activeTab === "analysis" && (
-                    <AnalysisTab 
-                      analysis={todaysBet.analysis}
-                      detailedAnalysis={todaysBet.detailedAnalysis}
-                      animatedValues={animatedValues}
-                    />
-                  )}
+                    {activeTab === "analysis" && (
+                      <AnalysisTab 
+                        analysis={todaysBet.analysis}
+                        detailedAnalysis={todaysBet.detailedAnalysis}
+                        animatedValues={animatedValues}
+                      />
+                    )}
 
-                  {activeTab === "team-stats" && (
-                    <TeamStatsTab 
-                      homeTeam={todaysBet.teamStats.home}
-                      awayTeam={todaysBet.teamStats.away}
-                    />
-                  )}
+                    {activeTab === "team-stats" && (
+                      <TeamStatsTab 
+                        homeTeam={todaysBet.teamStats.home}
+                        awayTeam={todaysBet.teamStats.away}
+                      />
+                    )}
+                  </div>
                 </div>
               </CardContent>
               
